@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -6,30 +7,39 @@ pipeline {
         stage('Checkout') {
             steps {
                 echo 'Checking out code from GitHub'
-                git branch: 'main',
-                    url: 'https://github.com/Dnyaneshwar-CloudEng/Create-a-Simple-Jenkins-Pipeline-for-CI-CD.git'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
                 echo 'Building Docker Image'
-                sh 'docker build -t devops-website .'
+                bat 'docker build -t devops-website .'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing Docker Image'
-                sh 'docker images devops-website'
+                bat 'docker images devops-website'
             }
         }
 
         stage('Deploy') {
             steps {
-                echo 'Deploying Application'
-                sh 'docker run -d -p 8080:80 --name my-website devops-website'
+                echo 'Deploying Docker Container'
+                bat 'docker run -d -p 8081:80 --name devops-website-container devops-website'
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline execution failed!'
         }
     }
 }
