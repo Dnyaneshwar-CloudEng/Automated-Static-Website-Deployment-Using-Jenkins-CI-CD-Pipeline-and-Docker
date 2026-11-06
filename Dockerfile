@@ -9,7 +9,7 @@ WORKDIR /var/www/html
 
 RUN rm -f index.nginx-debian.html
 
-COPY index.html .
+COPY demo.html .
 
 EXPOSE 80
 
